@@ -146,7 +146,7 @@
 
 	<scm>
 		<connection>scm:git:git@github.com:ina-foss/amalia-model.git</connection>
-		<url>scm:git:git@github.com:ina-foss/amalia-model.git</url>
+		<url>git@github.com:ina-foss/amalia-model.git</url>
 		<developerConnection>scm:git:git@github.com:ina-foss/amalia-model.git</developerConnection>
 	</scm>
 
@@ -155,7 +155,6 @@
 		<license>
 			<name>GNU LESSER GENERAL PUBLIC LICENSE, Version 3</name>
 			<url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
-			<distribution>repo</distribution>
 		</license>
 	</licenses>
 
@@ -164,16 +163,13 @@
 			<id>nherve</id>
 			<name>Nicolas HERVE</name>
 			<email>nherve@ina.fr</email>
+			<organization>INA Research Department</organization>
+			<organizationUrl>http://research.ina.fr</organizationUrl>
 			<roles>
 				<role>architect</role>
 				<role>developer</role>
 			</roles>
 		</developer>
 	</developers>
-
-	<organization>
-		<name>INA Research Department</name>
-		<url>http://research.ina.fr</url>
-	</organization>
 
 </project>
