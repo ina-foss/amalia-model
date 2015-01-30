@@ -53,11 +53,11 @@ public class MetadataFactory {
 	}
 
 	public static LocalisationBlock createLocalisationBlock(RexTimeCode tc) throws AmaliaException {
-		return createLocalisationBlock().setTc(tc.toString());
+		return createLocalisationBlock(tc.toString());
 	}
 
 	public static LocalisationBlock createLocalisationBlock(RexTimeCode tcin, RexTimeCode tcout) throws AmaliaException {
-		return createLocalisationBlock().setTcin(tcin.toString()).setTcout(tcout.toString());
+		return createLocalisationBlock(tcin.toString(), tcout.toString());
 	}
 
 	public static LocalisationBlock createLocalisationBlock(String tc) throws AmaliaException {
@@ -86,6 +86,14 @@ public class MetadataFactory {
 	public static MetadataBlock createMetadataBlock(String id, String type) throws AmaliaException {
 		MetadataBlock w = createMetadataBlock(id);
 		return w.setType(type);
+	}
+
+	public static LocalisationBlock createSynchronizedTextLocalisationBlock(RexTimeCode tcin, RexTimeCode tcout, String text) throws AmaliaException {
+		return createLocalisationBlock(tcin, tcout).setSynchronizedText(text);
+	}
+
+	public static LocalisationBlock createSynchronizedTextLocalisationBlock(String tcin, String tcout, String text) throws AmaliaException {
+		return createLocalisationBlock(tcin, tcout).setSynchronizedText(text);
 	}
 
 	public static void serialize(MetadataBlock metadata, ModelSerializer<Metadata> serializer) throws AmaliaException {

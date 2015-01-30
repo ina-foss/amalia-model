@@ -26,6 +26,7 @@ package fr.ina.research.amalia.model;
 
 import java.math.BigDecimal;
 
+import fr.ina.research.amalia.model.jaxb.Data;
 import fr.ina.research.amalia.model.jaxb.Localisation;
 import fr.ina.research.amalia.model.jaxb.Sublocalisations;
 
@@ -73,6 +74,17 @@ public class LocalisationBlock extends Block {
 
 	public LocalisationBlock setScore(BigDecimal value) {
 		internal.setScore(value);
+		return this;
+	}
+
+	public LocalisationBlock setSynchronizedText(String value) {
+		if (internal.getData() == null) {
+			internal.setData(new Data());
+		} else {
+			internal.getData().getText().clear();
+		}
+		internal.getData().getText().add(value);
+
 		return this;
 	}
 
