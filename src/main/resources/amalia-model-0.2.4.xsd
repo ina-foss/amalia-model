@@ -217,10 +217,20 @@ GNU Lesser General Public License for more details.
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="viewControl">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="action" type="actionType" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="color" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="shape" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
 	<xs:element name="metadata">
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element ref="viewControl" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="data" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element ref="localisation" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
@@ -232,7 +242,6 @@ GNU Lesser General Public License for more details.
 			<xs:attribute name="processor" type="xs:string" />
 			<xs:attribute name="processed" type="xs:dateTime" />
 			<xs:attribute name="version" type="xs:int" />
-			<xs:attribute name="action" type="actionType" />
 		</xs:complexType>
 	</xs:element>
 
