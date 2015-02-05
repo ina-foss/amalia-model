@@ -11,7 +11,7 @@ public class TestMetadataFactory {
 			MetadataBlock metadata = MetadataFactory.createMetadataBlock("test-123456", MetadataType.DETECTION);
 			metadata.setAlgorithm(TestMetadataFactory.class.getSimpleName());
 			metadata.setProcessor("Ina Research Department - N. HERVE");
-			LocalisationBlock root = metadata.addLocalisationBlock(RexTimeCode.build(0, 0, 0, 0), RexTimeCode.build(0, 1, 0, 0));
+			LocalisationBlock root = metadata.setRootLocalisationBlock(RexTimeCode.build(0, 0, 0, 0), RexTimeCode.build(0, 1, 0, 0));
 			root.addLocalisationBlock(RexTimeCode.build(0, 0, 30, 0)).setLabel("A label at 30 sec");
 			
 			System.out.println("<!-- XML serialization -->");
