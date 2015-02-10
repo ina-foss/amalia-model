@@ -26,6 +26,7 @@ package fr.ina.research.amalia.model;
 
 import java.math.BigDecimal;
 
+import fr.ina.research.amalia.AmaliaException;
 import fr.ina.research.amalia.model.jaxb.Data;
 import fr.ina.research.amalia.model.jaxb.Localisation;
 import fr.ina.research.amalia.model.jaxb.Sublocalisations;
@@ -48,6 +49,14 @@ public class LocalisationBlock extends Block {
 		internal = l;
 	}
 
+	@Override
+	public DataBlock getDataBlock() throws AmaliaException {
+		if (internal.getData() == null) {
+			internal.setData(new Data());
+		}
+		return new DataBlock(internal.getData());
+	}
+	
 	@Override
 	public LocalisationBlock addLocalisationBlock(LocalisationBlock l) {
 		if (internal.getSublocalisations() == null) {

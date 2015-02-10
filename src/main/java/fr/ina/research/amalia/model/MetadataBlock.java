@@ -33,6 +33,7 @@ import javax.xml.datatype.DatatypeFactory;
 
 import fr.ina.research.amalia.AmaliaException;
 import fr.ina.research.amalia.model.jaxb.ActionType;
+import fr.ina.research.amalia.model.jaxb.Data;
 import fr.ina.research.amalia.model.jaxb.Metadata;
 import fr.ina.research.amalia.model.jaxb.ViewControl;
 import fr.ina.research.rex.commons.tc.RexTimeCode;
@@ -116,6 +117,14 @@ public class MetadataBlock extends Block {
 
 	public void clearLocalisationBlock() {
 		internal.getLocalisation().clear();
+	}
+
+	@Override
+	public DataBlock getDataBlock() throws AmaliaException {
+		if (internal.getData() == null) {
+			internal.setData(new Data());
+		}
+		return new DataBlock(internal.getData());
 	}
 
 	public String getId() {

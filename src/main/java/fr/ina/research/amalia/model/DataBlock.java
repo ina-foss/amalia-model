@@ -24,34 +24,69 @@
  */
 package fr.ina.research.amalia.model;
 
+import org.apache.commons.codec.binary.Base64;
+
 import fr.ina.research.amalia.AmaliaException;
-import fr.ina.research.rex.commons.tc.RexTimeCode;
+import fr.ina.research.amalia.model.jaxb.Data;
+import fr.ina.research.amalia.model.jaxb.Histogram;
 
 /**
- * Any data block that has localisations.
+ * Additional data block.
  * 
  * @author Nicolas HERVE - nherve@ina.fr
  */
-public abstract class Block {
-	public abstract LocalisationBlock addLocalisationBlock(LocalisationBlock l);
+public class DataBlock {
+	private Data internal;
 
-	public LocalisationBlock addLocalisationBlock(RexTimeCode tc) throws AmaliaException {
-		return addLocalisationBlock(MetadataFactory.createLocalisationBlock(tc));
+	DataBlock(Data toWrap) {
+		super();
+
+		this.internal = toWrap;
 	}
 
-	public LocalisationBlock addLocalisationBlock(RexTimeCode tcin, RexTimeCode tcout) throws AmaliaException {
-		return addLocalisationBlock(MetadataFactory.createLocalisationBlock(tcin, tcout));
+	public void addHistogram(int[] pos, int[] neg) throws AmaliaException {
+		if (pos == null) {
+			throw new AmaliaException("Can't create an histogramm with null value array");
+		}
+
+		if ((neg != null) && (pos.length != neg.length)) {
+			throw new AmaliaException("Pos and neg value array dimensions don't match");
+		}
+
+		Histogram h = new Histogram();
+		h.setNbbins(pos.length);
+
+		h.setPosbins(renderData(pos));
+		h.setPosmax(getMaxValue(pos));
+
+		if (neg != null) {
+			h.setNegbins(renderData(neg));
+			h.setNegmax(getMaxValue(neg));
+		}
+
+		internal.getHistogram().add(h);
 	}
 
-	public LocalisationBlock addLocalisationBlock(String tc) throws AmaliaException {
-		return addLocalisationBlock(MetadataFactory.createLocalisationBlock(tc));
+	private String base64Encode(int[] data) {
+		byte[] bData = new byte[data.length];
+		for (int i = 0; i < data.length; i++) {
+			bData[i] = (byte) data[i];
+		}
+		byte[] encoded = Base64.encodeBase64(bData);
+		return new String(encoded);
 	}
 
-	public LocalisationBlock addLocalisationBlock(String tcin, String tcout) throws AmaliaException {
-		return addLocalisationBlock(MetadataFactory.createLocalisationBlock(tcin, tcout));
+	public int getMaxValue(int[] d) {
+		int mx = -1;
+		for (int v : d) {
+			if (v > mx) {
+				mx = v;
+			}
+		}
+		return mx;
 	}
-	
-	public abstract DataBlock getDataBlock() throws AmaliaException;
 
-	public abstract int getTcLevel();
+	public String renderData(int[] d) {
+		return base64Encode(d);
+	}
 }
