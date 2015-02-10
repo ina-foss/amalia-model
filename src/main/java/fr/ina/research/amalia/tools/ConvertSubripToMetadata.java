@@ -68,7 +68,7 @@ public class ConvertSubripToMetadata {
 		
 		File outputFile = new File(args[1]);
 		File outputDirectory = outputFile.getParentFile(); 
-		if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
+		if (outputDirectory != null && !outputDirectory.exists() && !outputDirectory.mkdirs()) {
 			System.err.println("Unable to create directories for : " + outputFile.getAbsolutePath());
 			usage();
 		}
