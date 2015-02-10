@@ -83,6 +83,12 @@ public class MetadataFactory {
 		return w.setType(type);
 	}
 
+	public static MetadataBlock createMetadataBlock(String id, MetadataType type, RexTimeCode duration) throws AmaliaException {
+		MetadataBlock w = createMetadataBlock(id, type);
+		w.setRootLocalisationBlock(MetadataFactory.createLocalisationBlock(new RexTimeCode(0), duration));
+		return w;
+	}
+
 	public static MetadataBlock createMetadataBlock(String id, String type) throws AmaliaException {
 		MetadataBlock w = createMetadataBlock(id);
 		return w.setType(type);

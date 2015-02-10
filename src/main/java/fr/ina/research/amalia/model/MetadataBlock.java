@@ -45,7 +45,7 @@ import fr.ina.research.rex.commons.tc.RexTimeCode;
 public class MetadataBlock extends Block {
 
 	public enum MetadataType {
-		DETECTION(MBT_DETECTION), VISUAL_DETECTION(MBT_VISUAL_DETECTION), VISUAL_TRACKING(MBT_VISUAL_TRACKING), SEGMENTATION(MBT_SEGMENTATION), AUDIO_SEGMENTATION(MBT_AUDIO_SEGMENTATION), TRANSCRIPTION(MBT_TRANSCRIPTION), SYNCHRONIZED_TEXT(MBT_SYNCHRONIZED_TEXT), KEYFRAMES(MBT_KEYFRAMES), DEFAULT(MBT_DEFAULT);
+		DETECTION(MBT_DETECTION), VISUAL_DETECTION(MBT_VISUAL_DETECTION), VISUAL_TRACKING(MBT_VISUAL_TRACKING), SEGMENTATION(MBT_SEGMENTATION), AUDIO_SEGMENTATION(MBT_AUDIO_SEGMENTATION), TRANSCRIPTION(MBT_TRANSCRIPTION), SYNCHRONIZED_TEXT(MBT_SYNCHRONIZED_TEXT), KEYFRAMES(MBT_KEYFRAMES), HISTOGRAM(MBT_HISTOGRAM), DEFAULT(MBT_DEFAULT);
 
 		private final String text;
 
@@ -67,6 +67,7 @@ public class MetadataBlock extends Block {
 	public final static String MBT_TRANSCRIPTION = "transcription";
 	public final static String MBT_SYNCHRONIZED_TEXT = "synchronized_text";
 	public final static String MBT_KEYFRAMES = "keyframes";
+	public final static String MBT_HISTOGRAM = "histogram";
 
 	public final static String MBT_DEFAULT = "default";
 
@@ -95,6 +96,22 @@ public class MetadataBlock extends Block {
 	public LocalisationBlock addToRootLocalisationBlock(LocalisationBlock l) {
 		root.addLocalisationBlock(l);
 		return l;
+	}
+
+	public LocalisationBlock addToRootLocalisationBlock(RexTimeCode tc) throws AmaliaException {
+		return addToRootLocalisationBlock(MetadataFactory.createLocalisationBlock(tc));
+	}
+
+	public LocalisationBlock addToRootLocalisationBlock(RexTimeCode tcin, RexTimeCode tcout) throws AmaliaException {
+		return addToRootLocalisationBlock(MetadataFactory.createLocalisationBlock(tcin, tcout));
+	}
+
+	public LocalisationBlock addToRootLocalisationBlock(String tc) throws AmaliaException {
+		return addToRootLocalisationBlock(MetadataFactory.createLocalisationBlock(tc));
+	}
+
+	public LocalisationBlock addToRootLocalisationBlock(String tcin, String tcout) throws AmaliaException {
+		return addToRootLocalisationBlock(MetadataFactory.createLocalisationBlock(tcin, tcout));
 	}
 
 	public void clearLocalisationBlock() {

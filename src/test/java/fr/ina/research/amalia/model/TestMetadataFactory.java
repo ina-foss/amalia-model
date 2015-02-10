@@ -8,11 +8,10 @@ public class TestMetadataFactory {
 
 	public static void main(String[] args) {
 		try {
-			MetadataBlock metadata = MetadataFactory.createMetadataBlock("test-123456", MetadataType.DETECTION);
+			MetadataBlock metadata = MetadataFactory.createMetadataBlock("test-123456", MetadataType.DETECTION, RexTimeCode.build(0, 1, 0, 0));
 			metadata.setAlgorithm(TestMetadataFactory.class.getSimpleName());
 			metadata.setProcessor("Ina Research Department - N. HERVE");
-			LocalisationBlock root = metadata.setRootLocalisationBlock(RexTimeCode.build(0, 0, 0, 0), RexTimeCode.build(0, 1, 0, 0));
-			root.addLocalisationBlock(RexTimeCode.build(0, 0, 30, 0)).setLabel("A label at 30 sec");
+			metadata.addToRootLocalisationBlock(RexTimeCode.build(0, 0, 30, 0)).setLabel("A label at 30 sec");
 			
 			System.out.println("<!-- XML serialization -->");
 			System.out.println(MetadataFactory.serializeToXMLString(metadata));

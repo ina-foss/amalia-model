@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import fr.ina.research.amalia.AmaliaException;
-import fr.ina.research.amalia.model.LocalisationBlock;
 import fr.ina.research.amalia.model.MetadataBlock;
 import fr.ina.research.amalia.model.MetadataBlock.MetadataType;
 import fr.ina.research.amalia.model.MetadataFactory;
@@ -77,9 +76,9 @@ public class SubripFileParser {
 			tcOut = srt.get(srt.size() - 1).getTcout();
 		}
 		
-		LocalisationBlock root = metadata.addLocalisationBlock(tcIn, tcOut);
+		metadata.setRootLocalisationBlock(tcIn, tcOut);
 		for (SingleSubTitle sst : srt) {
-			root.addLocalisationBlock(sst.convertToLocalisation());
+			metadata.addToRootLocalisationBlock(sst.convertToLocalisation());
 		}
 
 		return metadata;
