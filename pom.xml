@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ina.research</groupId>
 	<artifactId>amalia-model</artifactId>
-	<version>0.2.5-SNAPSHOT</version>
+	<version>0.2.5</version>
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Amalia metadata model manipulation</description>
@@ -191,7 +190,8 @@
 		<connection>scm:git:git@github.com:ina-foss/amalia-model.git</connection>
 		<url>git@github.com:ina-foss/amalia-model.git</url>
 		<developerConnection>scm:git:git@github.com:ina-foss/amalia-model.git</developerConnection>
-	</scm>
+	  <tag>amalia-model-0.2.5</tag>
+  </scm>
 
 	<distributionManagement>
 		<snapshotRepository>
