@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ina.research</groupId>
 	<artifactId>amalia-model</artifactId>
-	<version>0.2.4-SNAPSHOT</version>
+	<version>0.2.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Amalia metadata model manipulation</description>
@@ -11,7 +11,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<model.xsd>amalia-model-0.2.4.xsd</model.xsd>
+		<model.xsd>amalia-model-0.2.5.xsd</model.xsd>
 	</properties>
 
 	<dependencies>
