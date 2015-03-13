@@ -32,8 +32,16 @@ import java.io.StringWriter;
 
 import fr.ina.research.amalia.AmaliaException;
 import fr.ina.research.amalia.model.MetadataBlock.MetadataType;
+import fr.ina.research.amalia.model.jaxb.Channels;
+import fr.ina.research.amalia.model.jaxb.Container;
+import fr.ina.research.amalia.model.jaxb.Content;
+import fr.ina.research.amalia.model.jaxb.Contents;
+import fr.ina.research.amalia.model.jaxb.Editlist;
 import fr.ina.research.amalia.model.jaxb.Localisation;
 import fr.ina.research.amalia.model.jaxb.Metadata;
+import fr.ina.research.amalia.model.jaxb.Metadatas;
+import fr.ina.research.amalia.model.jaxb.Segment;
+import fr.ina.research.amalia.model.jaxb.Segments;
 import fr.ina.research.rex.commons.tc.RexTimeCode;
 import fr.ina.research.rex.model.serialize.ModelException;
 import fr.ina.research.rex.model.serialize.ModelSerializer;
@@ -92,6 +100,31 @@ public class MetadataFactory {
 	public static MetadataBlock createMetadataBlock(String id, String type) throws AmaliaException {
 		MetadataBlock w = createMetadataBlock(id);
 		return w.setType(type);
+	}
+
+	public static Container createSingleFileContainer(String id, String nativeId, String path) {
+		Container container = new Container();
+		container.setVersion(container.getVersion());
+		container.setContents(new Contents());
+		container.setSegments(new Segments());
+
+		Segment segment = new Segment();
+		segment.setChannels(new Channels());
+
+		Content content = new Content();
+		content.setMetadatas(new Metadatas());
+		content.setEditlist(new Editlist());
+
+		segment.setId(id);
+		segment.setLabel(nativeId);
+		segment.setNativeId(nativeId);
+		segment.setUri(path);
+		container.getSegments().getSegment().add(segment);
+
+		content.setId(id + "-content");
+		container.getContents().getContent().add(content);
+
+		return container;
 	}
 
 	public static LocalisationBlock createSynchronizedTextLocalisationBlock(RexTimeCode tcin, RexTimeCode tcout, String text) throws AmaliaException {

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -30,12 +31,19 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.codehaus.stax2.XMLStreamReader2;
+import org.xml.sax.SAXException;
 
 import com.ctc.wstx.api.WstxInputProperties;
 import com.ctc.wstx.stax.WstxInputFactory;
 
+import fr.ina.research.amalia.AmaliaConstants;
 import fr.ina.research.rex.model.serialize.ModelException;
 
 /**
@@ -132,6 +140,31 @@ public class XmlModelDeserializer<T> extends DefaultModelDeserializer<T> {
 	public void setStream(InputStream param) {
 		super.setStream(param);
 		xmlReader = null;
+	}
+	
+	public void validate() throws ModelException {
+		try {
+			Source schemaFile = new StreamSource(getClass().getResourceAsStream(AmaliaConstants.getXMLSchema()));
+			Source xmlFile;
+
+			if (isReaderUsed()) {
+				xmlFile = new StreamSource(getReader());
+			} else if (isStreamUsed()) {
+				xmlFile = new StreamSource(getStream());
+			} else {
+				throw new ModelException("No XML source is set");
+			}
+
+			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = schemaFactory.newSchema(schemaFile);
+			Validator validator = schema.newValidator();
+
+			validator.validate(xmlFile);
+		} catch (SAXException e) {
+			throw new ModelException(e);
+		} catch (IOException e) {
+			throw new ModelException(e);
+		}
 	}
 
 }
