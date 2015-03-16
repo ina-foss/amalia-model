@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 import fr.ina.research.amalia.AmaliaException;
 import fr.ina.research.amalia.model.jaxb.Data;
 import fr.ina.research.amalia.model.jaxb.Localisation;
-import fr.ina.research.amalia.model.jaxb.Spatials;
+import fr.ina.research.amalia.model.jaxb.Shape;
 import fr.ina.research.amalia.model.jaxb.Sublocalisations;
 
 /**
@@ -60,14 +60,6 @@ public class LocalisationBlock extends Block {
 		return l;
 	}
 
-	public SpatialBlock addSpatialBlock(SpatialBlock s) {
-		if (internal.getSpatials() == null) {
-			internal.setSpatials(new Spatials());
-		}
-		internal.getSpatials().getSpatial().add(s.getInternal());
-		return s;
-	}
-
 	@Override
 	public DataBlock getDataBlock() throws AmaliaException {
 		if (internal.getData() == null) {
@@ -92,6 +84,11 @@ public class LocalisationBlock extends Block {
 
 	public LocalisationBlock setScore(BigDecimal value) {
 		internal.setScore(value);
+		return this;
+	}
+
+	public LocalisationBlock setShape(Shape value) {
+		internal.setShape(value);
 		return this;
 	}
 

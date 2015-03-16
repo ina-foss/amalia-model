@@ -274,27 +274,10 @@ GNU Lesser General Public License for more details.
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="spatials">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="spatial" minOccurs="0" maxOccurs="unbounded" />
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="spatial">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="shape" minOccurs="1" maxOccurs="1" />
-			</xs:sequence>
-			<xs:attribute name="tc" type="tcType" />
-		</xs:complexType>
-	</xs:element>
-
 	<xs:element name="localisation">
 		<xs:complexType>
 			<xs:all>
-				<xs:element ref="spatials" minOccurs="0" />
+				<xs:element ref="shape" minOccurs="0" maxOccurs="1" />
 				<xs:element ref="data" minOccurs="0" />
 				<xs:element ref="sublocalisations" minOccurs="0" />
 			</xs:all>

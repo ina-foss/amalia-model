@@ -30,6 +30,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import fr.ina.research.amalia.AmaliaException;
 import fr.ina.research.amalia.model.MetadataBlock.MetadataType;
@@ -96,8 +98,12 @@ public class MetadataFactory {
 	}
 
 	public static MetadataBlock createMetadataBlock(String id, MetadataType type, RexTimeCode duration) throws AmaliaException {
+		return createMetadataBlock(id, type, new RexTimeCode(0), duration);
+	}
+
+	public static MetadataBlock createMetadataBlock(String id, MetadataType type, RexTimeCode tcin, RexTimeCode tcout) throws AmaliaException {
 		MetadataBlock w = createMetadataBlock(id, type);
-		w.setRootLocalisationBlock(MetadataFactory.createLocalisationBlock(new RexTimeCode(0), duration));
+		w.setRootLocalisationBlock(MetadataFactory.createLocalisationBlock(tcin, tcout));
 		return w;
 	}
 
@@ -155,18 +161,9 @@ public class MetadataFactory {
 		return container;
 	}
 
-	public static SpatialBlock createSpatialBlock(RexTimeCode tc) throws AmaliaException {
-		return createSpatialBlock(tc.toString());
-	}
-
-	public static SpatialBlock createSpatialBlock(RexTimeCode tc, Double xc, Double yc, Double rx, Double ry, Double o, ShapeType t) throws AmaliaException {
-		return createSpatialBlock(tc).setShape(createShape(xc, yc, rx, ry, o, t));
-	}
-
-	public static SpatialBlock createSpatialBlock(String tc) throws AmaliaException {
-		SpatialBlock s = new SpatialBlock();
-		s.setTc(tc);
-		return s;
+	public static LocalisationBlock createSpatialBlock(RexTimeCode tc, double xc, double yc, double rx, double ry, double o, ShapeType t) throws AmaliaException {
+		Shape s = createShape(xc, yc, rx, ry, o, t);
+		return createLocalisationBlock(tc).setShape(s);
 	}
 
 	public static LocalisationBlock createSynchronizedTextLocalisationBlock(RexTimeCode tcin, RexTimeCode tcout, String text) throws AmaliaException {
@@ -192,6 +189,23 @@ public class MetadataFactory {
 			serialize(metadata, serializer);
 			w.close();
 		} catch (IOException e) {
+			throw new AmaliaException(e);
+		}
+	}
+
+	public static void serializeToJsonFile(Collection<MetadataBlock> metadata, File f) throws AmaliaException {
+		ArrayList<Metadata> a = new ArrayList<Metadata>();
+		for (MetadataBlock m : metadata) {
+			a.add(m.getInternal());
+		}
+
+		JsonModelSerializer<ArrayList> jsonWriter = new JsonModelSerializer<ArrayList>(false, ArrayList.class);
+		try {
+			FileWriter w = new FileWriter(f);
+			jsonWriter.setWriter(w);
+			jsonWriter.serialize(a);
+			w.close();
+		} catch (IOException | ModelException e) {
 			throw new AmaliaException(e);
 		}
 	}
