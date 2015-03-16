@@ -57,6 +57,14 @@ GNU Lesser General Public License for more details.
 		</xs:restriction>
 	</xs:simpleType>
 
+	<xs:simpleType name="shapeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="rectangle"/>
+			<xs:enumeration value="ellipse"/>
+			<xs:enumeration value="point"/>
+		</xs:restriction>
+	</xs:simpleType>
+
 	<xs:simpleType name="coordType">
 		<xs:restriction base="xs:decimal">
 			<xs:minInclusive value="-1" />
@@ -253,27 +261,15 @@ GNU Lesser General Public License for more details.
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-
-	<xs:element name="rect">
+	
+	<xs:element name="shape">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="x" type="coordType" minOccurs="1" maxOccurs="1"/>
-				<xs:element name="y" type="coordType" minOccurs="1" maxOccurs="1"/>
-				<xs:element name="w" type="coordType" minOccurs="1" maxOccurs="1"/>
-				<xs:element name="h" type="coordType" minOccurs="1" maxOccurs="1"/>
-				<xs:element name="o" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="ellipse">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="xc" type="coordType" minOccurs="1" maxOccurs="1"/>
-				<xs:element name="yc" type="coordType" minOccurs="1" maxOccurs="1"/>
-				<xs:element name="hw" type="coordType" minOccurs="1" maxOccurs="1"/>
-				<xs:element name="hh" type="coordType" minOccurs="1" maxOccurs="1"/>
-				<xs:element name="o" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="t" type="shapeType" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="c" type="ptType" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="rx" type="coordType" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="ry" type="coordType" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="o" type="xs:decimal" minOccurs="0" maxOccurs="1"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -288,11 +284,9 @@ GNU Lesser General Public License for more details.
 
 	<xs:element name="spatial">
 		<xs:complexType>
-			<xs:choice>
-				<xs:element name="point" type="ptType" />
-				<xs:element ref="rect" />
-				<xs:element ref="ellipse" />
-			</xs:choice>
+			<xs:sequence>
+				<xs:element ref="shape" minOccurs="1" maxOccurs="1" />
+			</xs:sequence>
 			<xs:attribute name="tc" type="tcType" />
 		</xs:complexType>
 	</xs:element>

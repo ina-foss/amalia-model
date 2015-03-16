@@ -36,19 +36,9 @@ import fr.ina.research.rex.model.serialize.ModelException;
  */
 public class JsonModelSerializer<T> extends DefaultModelSerializer<T> {
 	private ObjectMapper objectMapper;
-	private boolean doNullValues;
-
-	public JsonModelSerializer() {
-		this(true);
-	}
-
-	public JsonModelSerializer(boolean doNullValues) {
-		super();
-		this.doNullValues = doNullValues;
-	}
 
 	public JsonModelSerializer(boolean doNullValues, Class<T> serializedType) {
-		this(doNullValues);
+		super();
 		objectMapper = new ObjectMapper();
 		AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
 		// make serializer use JAXB annotations (only)

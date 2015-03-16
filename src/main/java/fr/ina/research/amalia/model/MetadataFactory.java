@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 
 import fr.ina.research.amalia.AmaliaException;
 import fr.ina.research.amalia.model.MetadataBlock.MetadataType;
@@ -40,8 +41,11 @@ import fr.ina.research.amalia.model.jaxb.Editlist;
 import fr.ina.research.amalia.model.jaxb.Localisation;
 import fr.ina.research.amalia.model.jaxb.Metadata;
 import fr.ina.research.amalia.model.jaxb.Metadatas;
+import fr.ina.research.amalia.model.jaxb.PtType;
 import fr.ina.research.amalia.model.jaxb.Segment;
 import fr.ina.research.amalia.model.jaxb.Segments;
+import fr.ina.research.amalia.model.jaxb.Shape;
+import fr.ina.research.amalia.model.jaxb.ShapeType;
 import fr.ina.research.rex.commons.tc.RexTimeCode;
 import fr.ina.research.rex.model.serialize.ModelException;
 import fr.ina.research.rex.model.serialize.ModelSerializer;
@@ -102,6 +106,30 @@ public class MetadataFactory {
 		return w.setType(type);
 	}
 
+	public static Shape createShape(Double xc, Double yc, Double rx, Double ry, Double o, ShapeType t) throws AmaliaException {
+		Shape s = new Shape();
+		s.setT(t);
+
+		PtType center = new PtType();
+		center.setX(BigDecimal.valueOf(xc));
+		center.setY(BigDecimal.valueOf(yc));
+		s.setC(center);
+
+		if (rx != null) {
+			s.setRx(BigDecimal.valueOf(rx));
+		}
+
+		if (ry != null) {
+			s.setRy(BigDecimal.valueOf(ry));
+		}
+
+		if (o != null) {
+			s.setO(BigDecimal.valueOf(o));
+		}
+
+		return s;
+	}
+
 	public static Container createSingleFileContainer(String id, String nativeId, String path) {
 		Container container = new Container();
 		container.setVersion(container.getVersion());
@@ -125,6 +153,20 @@ public class MetadataFactory {
 		container.getContents().getContent().add(content);
 
 		return container;
+	}
+
+	public static SpatialBlock createSpatialBlock(RexTimeCode tc) throws AmaliaException {
+		return createSpatialBlock(tc.toString());
+	}
+
+	public static SpatialBlock createSpatialBlock(RexTimeCode tc, Double xc, Double yc, Double rx, Double ry, Double o, ShapeType t) throws AmaliaException {
+		return createSpatialBlock(tc).setShape(createShape(xc, yc, rx, ry, o, t));
+	}
+
+	public static SpatialBlock createSpatialBlock(String tc) throws AmaliaException {
+		SpatialBlock s = new SpatialBlock();
+		s.setTc(tc);
+		return s;
 	}
 
 	public static LocalisationBlock createSynchronizedTextLocalisationBlock(RexTimeCode tcin, RexTimeCode tcout, String text) throws AmaliaException {
