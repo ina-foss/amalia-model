@@ -189,6 +189,10 @@ public class MetadataBlock extends Block {
 		return this;
 	}
 
+	public void setRootDirectory(String value) {
+		internal.setRootDirectory(value);
+	}
+
 	public LocalisationBlock setRootLocalisationBlock(LocalisationBlock l) {
 		addLocalisationBlock(l);
 		root = l;
