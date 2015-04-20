@@ -131,6 +131,7 @@ GNU Lesser General Public License for more details.
 	<xs:element name="clazzref">
 		<xs:complexType>
 			<xs:attribute name="id" type="idType" use="required" />
+			<xs:attribute name="referentialId" type="idType" />
 			<xs:attribute name="score" type="scoreType" />
 		</xs:complexType>
 	</xs:element>
@@ -231,6 +232,7 @@ GNU Lesser General Public License for more details.
 				<xs:element name="action" type="actionType" minOccurs="0" maxOccurs="1"/>
 				<xs:element name="color" type="xs:string" minOccurs="0" maxOccurs="1"/>
 				<xs:element name="shape" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="parseLevel" type="xs:int" minOccurs="0" maxOccurs="1"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -243,6 +245,7 @@ GNU Lesser General Public License for more details.
 				<xs:element ref="localisation" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
 			<xs:attribute name="id" type="idType" use="required" />
+			<xs:attribute name="label" type="xs:string" />
 			<xs:attribute name="type" type="dataType" />
 			<xs:attribute name="rootDirectory" type="xs:string" />
 			<xs:attribute name="enrich" type="xs:string" />
