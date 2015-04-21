@@ -171,6 +171,10 @@ public class MetadataBlock extends Block {
 		return this;
 	}
 
+	public void setLabel(String value) {
+		internal.setLabel(value);
+	}
+
 	public MetadataBlock setProcessedNow() throws AmaliaException {
 		return setProcessedNow(Locale.getDefault());
 	}
