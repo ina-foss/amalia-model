@@ -24,9 +24,12 @@
  */
 package fr.ina.research.amalia.model;
 
+import java.math.BigDecimal;
+
 import org.apache.commons.codec.binary.Base64;
 
 import fr.ina.research.amalia.AmaliaException;
+import fr.ina.research.amalia.model.jaxb.Clazzref;
 import fr.ina.research.amalia.model.jaxb.Data;
 import fr.ina.research.amalia.model.jaxb.Histogram;
 
@@ -44,7 +47,16 @@ public class DataBlock {
 		this.internal = toWrap;
 	}
 
-	public void addHistogram(int[] pos, int[] neg) throws AmaliaException {
+	public DataBlock addClassReference(String id, String referentialId, BigDecimal score) throws AmaliaException {
+		Clazzref ref = new Clazzref();
+		ref.setId(id);
+		ref.setReferentialId(referentialId);
+		ref.setScore(score);
+		internal.getClazzref().add(ref);
+		return this;
+	}
+	
+	public DataBlock addHistogram(int[] pos, int[] neg) throws AmaliaException {
 		if (pos == null) {
 			throw new AmaliaException("Can't create an histogramm with null value array");
 		}
@@ -65,6 +77,8 @@ public class DataBlock {
 		}
 
 		internal.getHistogram().add(h);
+		
+		return this;
 	}
 
 	private String base64Encode(int[] data) {

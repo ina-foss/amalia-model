@@ -153,13 +153,35 @@ public class MetadataBlock extends Block {
 		return internal.getType();
 	}
 
-	public MetadataBlock setAction(ActionType value) {
+	private void checkViewControl() {
 		if (internal.getViewControl() == null) {
 			internal.setViewControl(new ViewControl());
 		}
+	}
+	
+	public MetadataBlock setVCAction(ActionType value) {
+		checkViewControl();
 		internal.getViewControl().setAction(value);
 		return this;
 	}
+	
+    public MetadataBlock setVCColor(String value) {
+    	checkViewControl();
+        internal.getViewControl().setColor(value);
+		return this;
+    }
+    
+    public MetadataBlock setVCShape(String value) {
+    	checkViewControl();
+        internal.getViewControl().setShape(value);
+		return this;
+    }
+    
+    public MetadataBlock setVCParseLevel(Integer value) {
+    	checkViewControl();
+        internal.getViewControl().setParseLevel(value);
+		return this;
+    }
 
 	public MetadataBlock setAlgorithm(String value) {
 		internal.setAlgorithm(value);
