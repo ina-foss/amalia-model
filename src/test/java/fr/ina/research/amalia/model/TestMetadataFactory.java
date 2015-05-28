@@ -41,7 +41,12 @@ public class TestMetadataFactory {
 			System.out.println(MetadataFactory.serializeToXMLString(metadata));
 			System.out.println();
 			System.out.println("<!-- Json serialization -->");
-			System.out.println(MetadataFactory.serializeToJsonString(metadata));
+			String asJson = MetadataFactory.serializeToJsonString(metadata);
+			System.out.println(asJson);
+			
+			System.out.println("<!-- Json deserialization -->");
+			MetadataBlock metadata2 = MetadataFactory.deserializeFromJsonString(asJson);
+			System.out.println(metadata2);
 			
 		} catch (AmaliaException e) {
 			e.printStackTrace();

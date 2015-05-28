@@ -1,25 +1,25 @@
 /*
  * Copyright (c) 2015 Institut National de l'Audiovisuel, INA
  *
- * This file is free software: you can redistribute it and/or modify   
+ * This file is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or   
- * (at your option) any later version.                                 
- * 
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
  * Redistributions of source code and compiled versions
- * must retain the above copyright notice, this list of conditions and 
- * the following disclaimer.                                           
- * 
- * Neither the name of the copyright holder nor the names of its       
+ * must retain the above copyright notice, this list of conditions and
+ * the following disclaimer.
+ *
+ * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.            
- * 
- * You should have received a copy of the GNU Lesser General Public License   
- * along with this file. If not, see <http://www.gnu.org/licenses/>    
- * 
- * This file is distributed in the hope that it will be useful,        
- * but WITHOUT ANY WARRANTY; without even the implied warranty of      
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the        
+ * this software without specific prior written permission.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this file. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  */
 
@@ -28,6 +28,7 @@ package fr.ina.research.amalia.model;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -49,14 +50,16 @@ import fr.ina.research.amalia.model.jaxb.Segments;
 import fr.ina.research.amalia.model.jaxb.Shape;
 import fr.ina.research.amalia.model.jaxb.ShapeType;
 import fr.ina.research.rex.commons.tc.RexTimeCode;
+import fr.ina.research.rex.model.serialize.ModelDeserializer;
 import fr.ina.research.rex.model.serialize.ModelException;
 import fr.ina.research.rex.model.serialize.ModelSerializer;
+import fr.ina.research.rex.model.serialize.impl.JsonModelDeserializer;
 import fr.ina.research.rex.model.serialize.impl.JsonModelSerializer;
 import fr.ina.research.rex.model.serialize.impl.XmlModelSerializer;
 
 /**
  * This is the main class to create, manipulate and serialize metadata blocks.
- * 
+ *
  * @author Nicolas HERVE - nherve@ina.fr
  */
 public class MetadataFactory {
@@ -172,6 +175,25 @@ public class MetadataFactory {
 
 	public static LocalisationBlock createSynchronizedTextLocalisationBlock(String tcin, String tcout, String text) throws AmaliaException {
 		return createLocalisationBlock(tcin, tcout).setSynchronizedText(text);
+	}
+
+	public static MetadataBlock deserialize(ModelDeserializer<Metadata> deserializer) throws AmaliaException {
+		try {
+			return wrap(deserializer.deserializeNext());
+		} catch (ModelException e) {
+			throw new AmaliaException(e);
+		}
+	}
+
+	public static MetadataBlock deserializeFromJsonString(String json) throws AmaliaException {
+		JsonModelDeserializer<Metadata> jsonReader = new JsonModelDeserializer<Metadata>(Metadata.class);
+		return deserializeFromString(json, jsonReader);
+	}
+
+	public static MetadataBlock deserializeFromString(String data, ModelDeserializer<Metadata> deserializer) throws AmaliaException {
+		StringReader r = new StringReader(data);
+		deserializer.setReader(r);
+		return deserialize(deserializer);
 	}
 
 	public static void serialize(MetadataBlock metadata, ModelSerializer<Metadata> serializer) throws AmaliaException {
