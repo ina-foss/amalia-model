@@ -142,7 +142,7 @@ GNU Lesser General Public License for more details.
 				<xs:element ref="segments" />
 				<xs:element ref="contents" />
 			</xs:sequence>
-			<xs:attribute name="version" type="xs:string" fixed="0.2.0" />
+			<xs:attribute name="version" type="xs:string" fixed="0.2.5" />
 		</xs:complexType>
 	</xs:element>
 
