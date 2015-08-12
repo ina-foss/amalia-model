@@ -49,6 +49,9 @@ import fr.ina.research.amalia.model.jaxb.Segment;
 import fr.ina.research.amalia.model.jaxb.Segments;
 import fr.ina.research.amalia.model.jaxb.Shape;
 import fr.ina.research.amalia.model.jaxb.ShapeType;
+import fr.ina.research.amalia.model.tracking.TrackPosition;
+import fr.ina.research.amalia.model.tracking.TrackSegment;
+import fr.ina.research.amalia.model.tracking.TrackedObject;
 import fr.ina.research.rex.commons.tc.RexTimeCode;
 import fr.ina.research.rex.model.serialize.ModelDeserializer;
 import fr.ina.research.rex.model.serialize.ModelException;
@@ -175,6 +178,22 @@ public class MetadataFactory {
 
 	public static LocalisationBlock createSynchronizedTextLocalisationBlock(String tcin, String tcout, String text) throws AmaliaException {
 		return createLocalisationBlock(tcin, tcout).setSynchronizedText(text);
+	}
+
+	public static MetadataBlock createTrackingMetadataBlock(TrackedObject to, String id) throws AmaliaException {
+		MetadataBlock m = MetadataFactory.createMetadataBlock(id, MetadataType.VISUAL_TRACKING, to.getTcIn(), to.getTcOut());
+
+		for (TrackSegment s : to) {
+			LocalisationBlock slb = MetadataFactory.createLocalisationBlock(s.getTcIn(), s.getTcOut());
+			m.addToRootLocalisationBlock(slb);
+
+			for (TrackPosition p : s) {
+				LocalisationBlock spatial = MetadataFactory.createSpatialBlock(p.getTc(), p.getXc(), p.getYc(), p.getHw(), p.getHh(), p.getO(), to.getShapeType());
+				slb.addLocalisationBlock(spatial);
+			}
+		}
+
+		return m;
 	}
 
 	public static MetadataBlock deserialize(ModelDeserializer<Metadata> deserializer) throws AmaliaException {
