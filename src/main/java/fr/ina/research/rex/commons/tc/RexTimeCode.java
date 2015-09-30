@@ -1,18 +1,18 @@
 /*
  * Copyright 2012-2015 Institut National de l'Audiovisuel
- * 
+ *
  * This file is part of Rex.
- * 
+ *
  * Rex is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Rex is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Rex. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,7 +25,7 @@ import java.util.regex.PatternSyntaxException;
 import fr.ina.research.amalia.AmaliaException;
 
 /**
- * 
+ *
  * @author Nicolas HERVE - nherve@ina.fr
  */
 public class RexTimeCode implements Comparable<RexTimeCode> {
@@ -54,11 +54,15 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 
 	public static synchronized void initPattern() throws AmaliaException {
 		if (pattern == null) {
-			try {
-				pattern = Pattern.compile(DEFAULT_PATTERN);
-			} catch (PatternSyntaxException e) {
-				throw new AmaliaException(e);
-			}
+			initPattern(DEFAULT_PATTERN);
+		}
+	}
+
+	public static synchronized void initPattern(String str) throws AmaliaException {
+		try {
+			pattern = Pattern.compile(str);
+		} catch (PatternSyntaxException e) {
+			throw new AmaliaException(e);
 		}
 	}
 
@@ -184,6 +188,10 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 
 	@Override
 	public String toString() {
+		return toString(DEFAULT_FORMAT);
+	}
+
+	public String toString(String format) {
 		int h = (int) (second / 3600);
 		double left = second - (h * 3600);
 		int m = (int) (left / 60);
@@ -191,6 +199,6 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 		int s = (int) Math.floor(left);
 		left = left - s;
 		int ms = (int) Math.round(left * MS);
-		return String.format(DEFAULT_FORMAT, h, m, s, ms);
+		return String.format(format, h, m, s, ms);
 	}
 }
