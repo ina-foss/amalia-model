@@ -74,6 +74,9 @@ public class DataBlock {
 		if (neg != null) {
 			h.setNegbins(renderData(neg));
 			h.setNegmax(getMaxValue(neg));
+		} else {
+			h.setNegbins("");
+			h.setNegmax(0);
 		}
 
 		internal.getHistogram().add(h);
