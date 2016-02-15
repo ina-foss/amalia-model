@@ -47,10 +47,9 @@ public class DataBlock {
 		this.internal = toWrap;
 	}
 
-	public DataBlock addClassReference(String id, String referentialId, BigDecimal score) throws AmaliaException {
+	public DataBlock addClassReference(String id, BigDecimal score) throws AmaliaException {
 		Clazzref ref = new Clazzref();
 		ref.setId(id);
-		ref.setReferentialId(referentialId);
 		ref.setScore(score);
 		internal.getClazzref().add(ref);
 		return this;

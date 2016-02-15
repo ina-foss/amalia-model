@@ -121,8 +121,10 @@ GNU Lesser General Public License for more details.
 			<xs:sequence>
 				<xs:element name="uri" type="uriType" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element ref="attribute" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="label" type="xs:string" />
 			</xs:sequence>
 			<xs:attribute name="id" type="idType" use="required" />
+			<xs:attribute name="referentialId" type="idType" />
 			<xs:attribute name="type" type="dataType" />
 			<xs:attribute name="score" type="scoreType" />
 		</xs:complexType>
@@ -131,7 +133,6 @@ GNU Lesser General Public License for more details.
 	<xs:element name="clazzref">
 		<xs:complexType>
 			<xs:attribute name="id" type="idType" use="required" />
-			<xs:attribute name="referentialId" type="idType" />
 			<xs:attribute name="score" type="scoreType" />
 		</xs:complexType>
 	</xs:element>
