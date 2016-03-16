@@ -256,6 +256,36 @@ public class MetadataFactory {
 		serializeToFile(metadata, f, jsonWriter);
 	}
 
+	public static String serializeToJsonString(Collection<MetadataBlock> listOfMetadata) throws AmaliaException {
+
+		ArrayList<Metadata> a = new ArrayList<Metadata>();
+
+		for (MetadataBlock m : listOfMetadata) {
+
+			a.add(m.getInternal());
+
+		}
+
+		JsonModelSerializer<ArrayList> jsonWriter = new JsonModelSerializer<ArrayList>(false, ArrayList.class);
+
+		StringWriter w = new StringWriter();
+
+		try {
+
+			jsonWriter.setWriter(w);
+
+			jsonWriter.serialize(a);
+
+		} catch (ModelException e) {
+
+			throw new AmaliaException(e);
+
+		}
+
+		return w.toString();
+
+	}
+
 	public static String serializeToJsonString(MetadataBlock metadata) throws AmaliaException {
 		JsonModelSerializer<Metadata> jsonWriter = new JsonModelSerializer<Metadata>(false, Metadata.class);
 		return serializeToString(metadata, jsonWriter);
