@@ -285,6 +285,7 @@ GNU Lesser General Public License for more details.
 				<xs:element ref="data" minOccurs="0" />
 				<xs:element ref="sublocalisations" minOccurs="0" />
 			</xs:all>
+			<xs:attribute name="id" type="idType" use="optional" />
 			<xs:attribute name="label" type="xs:string" />
 			<xs:attribute name="thumb" type="uriType" />
 			<xs:attribute name="channel" type="xs:string" />

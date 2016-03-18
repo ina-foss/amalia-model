@@ -77,6 +77,10 @@ public class LocalisationBlock extends Block {
 		return internal.getTclevel();
 	}
 
+	public void setId(String value) {
+		internal.setId(value);
+	}
+
 	public LocalisationBlock setLabel(String value) {
 		internal.setLabel(value);
 		return this;
