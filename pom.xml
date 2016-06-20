@@ -12,6 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<model.xsd>amalia-model-0.2.5.xsd</model.xsd>
+		<sonar.language>java</sonar.language>
 	</properties>
 
 	<dependencies>
