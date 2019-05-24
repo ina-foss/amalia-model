@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ina.research</groupId>
 	<artifactId>amalia-model</artifactId>
@@ -9,9 +11,18 @@
 	<url>http://ina-foss.github.io/amalia.js/</url>
 
 	<properties>
+		<sourceEncoding>UTF-8</sourceEncoding>
+		<maven.version>3.6.0</maven.version>
+		<maven-resources-plugin.version>3.0.1</maven-resources-plugin.version>
+		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<model.xsd>amalia-model-0.2.5.xsd</model.xsd>
 		<sonar.language>java</sonar.language>
+		<javax-annotations.version>1.3.2</javax-annotations.version>
+		<jaxb.generated>src/main/jaxb-generated</jaxb.generated>
 	</properties>
 
 	<dependencies>
@@ -36,6 +47,34 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
 		</dependency>
+		<!-- Java 11 specific stuff -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>2.3.2</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.activation</groupId>
+			<artifactId>jakarta.activation</artifactId>
+			<version>1.2.1</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -53,11 +92,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.8.0</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<release>${java.version}</release>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+						<version>6.2.1</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<!-- <plugin> -->
 			<!-- <groupId>org.apache.maven.plugins</groupId> -->
@@ -149,25 +194,52 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>1.5</version>
+				<groupId>com.github.davidmoten</groupId>
+				<artifactId>jax-maven-plugin</artifactId>
+				<version>0.1.7</version>
 				<executions>
 					<execution>
 						<id>xjc</id>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>xjc</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<outputDirectory>${project.build.directory}/generated-sources/jaxb</outputDirectory>
-					<schemaDirectory>${basedir}/src/main/resources</schemaDirectory>
-					<schemaFiles>${model.xsd}</schemaFiles>
-					<packageName>fr.ina.research.amalia.model.jaxb</packageName>
-					<dtd>false</dtd>
-					<xmlschema>true</xmlschema>
+					<systemProperties>
+						<enableExternalEntityProcessing>true</enableExternalEntityProcessing>
+					</systemProperties>
+					<jvmArguments>
+						<jvmArgument>-Xms32m</jvmArgument>
+					</jvmArguments>
+					<arguments>
+						<argument>-verbose</argument>
+						<argument>-d</argument>
+						<argument>${project.basedir}/${jaxb.generated}</argument>
+						<argument>-p</argument>
+						<argument>fr.ina.research.amalia.model.jaxb</argument>
+						<argument>${project.basedir}/src/main/xsd/${model.xsd}</argument>
+					</arguments>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${jaxb.generated}</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -181,15 +253,15 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>build-helper-maven-plugin</artifactId>
-										<versionRange>[1.8,)</versionRange>
+										<groupId>com.github.davidmoten</groupId>
+										<artifactId>jax-maven-plugin</artifactId>
+										<versionRange>[0.1.7,)</versionRange>
 										<goals>
-											<goal>add-source</goal>
+											<goal>xjc</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<execute/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
