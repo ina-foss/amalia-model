@@ -93,8 +93,12 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 
 	private double second;
 
-	public RexTimeCode(double second) {
+	private RexTimeCode() {
 		super();
+	}
+	
+	public RexTimeCode(double second) {
+		this();
 		this.second = second;
 	}
 
