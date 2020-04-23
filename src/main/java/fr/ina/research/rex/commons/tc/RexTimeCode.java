@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 Institut National de l'Audiovisuel
+ * Copyright 2012-2020 Institut National de l'Audiovisuel
  *
  * This file is part of Rex.
  *
@@ -129,6 +129,14 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 	@Override
 	public int compareTo(RexTimeCode o) {
 		return (int) Math.signum(getSecond() - o.getSecond());
+	}
+	
+	public boolean isBefore(RexTimeCode o) {
+		return compareTo(o) < 0;
+	}
+	
+	public boolean isAfter(RexTimeCode o) {
+		return compareTo(o) > 0;
 	}
 
 	@Override
