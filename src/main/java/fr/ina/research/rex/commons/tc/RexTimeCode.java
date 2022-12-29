@@ -96,7 +96,7 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 	private RexTimeCode() {
 		super();
 	}
-	
+
 	public RexTimeCode(double second) {
 		this();
 		this.second = second;
@@ -130,24 +130,13 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 	public int compareTo(RexTimeCode o) {
 		return (int) Math.signum(getSecond() - o.getSecond());
 	}
-	
-	public boolean isBefore(RexTimeCode o) {
-		return compareTo(o) < 0;
-	}
-	
-	public boolean isAfter(RexTimeCode o) {
-		return compareTo(o) > 0;
-	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
 		}
 		RexTimeCode other = (RexTimeCode) obj;
@@ -173,6 +162,22 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 		temp = Double.doubleToLongBits(second);
 		result = (prime * result) + (int) (temp ^ (temp >>> 32));
 		return result;
+	}
+
+	public boolean isAfter(RexTimeCode o) {
+		return compareTo(o) > 0;
+	}
+
+	public boolean isAfterOrEqual(RexTimeCode o) {
+		return compareTo(o) >= 0;
+	}
+
+	public boolean isBefore(RexTimeCode o) {
+		return compareTo(o) < 0;
+	}
+
+	public boolean isBeforeOrEqual(RexTimeCode o) {
+		return compareTo(o) <= 0;
 	}
 
 	public void remove(double s) throws AmaliaException {

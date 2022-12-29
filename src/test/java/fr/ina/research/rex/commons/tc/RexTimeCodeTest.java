@@ -148,6 +148,10 @@ public class RexTimeCodeTest {
 			Assert.assertTrue(tc2.isAfter(tc1));
 			Assert.assertFalse(tc2.isAfter(tc3));
 			
+			Assert.assertTrue(tc1.isBeforeOrEqual(tc2));
+			Assert.assertTrue(tc2.isAfterOrEqual(tc1));
+			Assert.assertTrue(tc2.isAfterOrEqual(tc3));
+			
 		} catch (AmaliaException e) {
 			Assert.fail("AmaliaException : " + e.getMessage());
 		}
