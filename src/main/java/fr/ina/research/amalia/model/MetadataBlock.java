@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Institut National de l'Audiovisuel, INA
+ * Copyright (c) 2015-2024 Institut National de l'Audiovisuel, INA
  *
  * This file is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,10 @@ import javax.xml.datatype.DatatypeFactory;
 import fr.ina.research.amalia.AmaliaException;
 import fr.ina.research.amalia.model.jaxb.ActionType;
 import fr.ina.research.amalia.model.jaxb.Data;
+import fr.ina.research.amalia.model.jaxb.DirectionType;
 import fr.ina.research.amalia.model.jaxb.Metadata;
+import fr.ina.research.amalia.model.jaxb.Property;
+import fr.ina.research.amalia.model.jaxb.Relation;
 import fr.ina.research.amalia.model.jaxb.ViewControl;
 import fr.ina.research.rex.commons.tc.RexTimeCode;
 
@@ -46,7 +49,7 @@ import fr.ina.research.rex.commons.tc.RexTimeCode;
 public class MetadataBlock extends Block {
 
 	public enum MetadataType {
-		DETECTION(MBT_DETECTION), VISUAL_DETECTION(MBT_VISUAL_DETECTION), VISUAL_TRACKING(MBT_VISUAL_TRACKING), VISUAL_SEGMENTATION(MBT_VISUAL_SEGMENTATION), SEGMENTATION(MBT_SEGMENTATION), AUDIO_SEGMENTATION(MBT_AUDIO_SEGMENTATION), TRANSCRIPTION(MBT_TRANSCRIPTION), SYNCHRONIZED_TEXT(MBT_SYNCHRONIZED_TEXT), KEYFRAMES(MBT_KEYFRAMES), HISTOGRAM(MBT_HISTOGRAM), DEFAULT(MBT_DEFAULT);
+		DETECTION(MBT_DETECTION), VISUAL_DETECTION(MBT_VISUAL_DETECTION), VISUAL_TRACKING(MBT_VISUAL_TRACKING), VISUAL_SEGMENTATION(MBT_VISUAL_SEGMENTATION), SEGMENTATION(MBT_SEGMENTATION), AUDIO_SEGMENTATION(MBT_AUDIO_SEGMENTATION), TRANSCRIPTION(MBT_TRANSCRIPTION), SYNCHRONIZED_TEXT(MBT_SYNCHRONIZED_TEXT), KEYFRAMES(MBT_KEYFRAMES), HISTOGRAM(MBT_HISTOGRAM), SPAN(MBT_SPAN), DEFAULT(MBT_DEFAULT);
 
 		private final String text;
 
@@ -70,6 +73,7 @@ public class MetadataBlock extends Block {
 	public final static String MBT_SYNCHRONIZED_TEXT = "synchronized_text";
 	public final static String MBT_KEYFRAMES = "keyframes";
 	public final static String MBT_HISTOGRAM = "histogram";
+	public final static String MBT_SPAN = "span";
 
 	public final static String MBT_DEFAULT = "default";
 
@@ -93,6 +97,25 @@ public class MetadataBlock extends Block {
 		l.setTclevel(getTcLevel());
 		internal.getLocalisation().add(l.getInternal());
 		return l;
+	}
+	
+	public Relation addRelation(String from, String to, DirectionType t) {
+		return addRelation(from, to, t, null, null);
+	}
+	
+	public Relation addRelation(String from, String to, DirectionType t, String k, String v) {
+		Relation r = new Relation();
+		r.setFrom(from);
+		r.setTo(to);
+		r.setDirection(t);
+		internal.getRelation().add(r);
+		if (k != null && v != null) {
+			Property p = new Property();
+			p.setKey(k);
+			p.setValue(v);
+			r.getProperty().add(p);
+		}
+		return r;
 	}
 
 	public LocalisationBlock addToRootLocalisationBlock(LocalisationBlock l) {

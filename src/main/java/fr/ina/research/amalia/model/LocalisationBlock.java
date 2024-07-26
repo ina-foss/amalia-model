@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Institut National de l'Audiovisuel, INA
+ * Copyright (c) 2015-2024 Institut National de l'Audiovisuel, INA
  *
  * This file is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import fr.ina.research.amalia.AmaliaException;
 import fr.ina.research.amalia.model.jaxb.Data;
 import fr.ina.research.amalia.model.jaxb.Localisation;
+import fr.ina.research.amalia.model.jaxb.Property;
 import fr.ina.research.amalia.model.jaxb.Shape;
 import fr.ina.research.amalia.model.jaxb.Sublocalisations;
 
@@ -59,6 +60,14 @@ public class LocalisationBlock extends Block {
 		internal.getSublocalisations().getLocalisation().add(l.getInternal());
 		return l;
 	}
+	
+	public LocalisationBlock addProperty(String k, String v) {
+		Property kv = new Property();
+		kv.setKey(k);
+		kv.setValue(v);
+		internal.getProperty().add(kv);
+		return this;
+	}
 
 	@Override
 	public DataBlock getDataBlock() throws AmaliaException {
@@ -77,8 +86,9 @@ public class LocalisationBlock extends Block {
 		return internal.getTclevel();
 	}
 
-	public void setId(String value) {
+	public LocalisationBlock setId(String value) {
 		internal.setId(value);
+		return this;
 	}
 
 	public LocalisationBlock setLabel(String value) {

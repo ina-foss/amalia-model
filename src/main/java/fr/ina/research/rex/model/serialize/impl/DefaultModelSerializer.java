@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 Institut National de l'Audiovisuel
+ * Copyright 2012-2024 Institut National de l'Audiovisuel
  * 
  * This file is part of Rex.
  * 

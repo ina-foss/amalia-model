@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 Institut National de l'Audiovisuel
+ * Copyright 2012-2024 Institut National de l'Audiovisuel
  * 
  * This file is part of Rex.
  * 
@@ -37,28 +37,32 @@ import fr.ina.research.rex.model.serialize.ModelException;
 public class JsonModelSerializer<T> extends DefaultModelSerializer<T> {
 	private ObjectMapper objectMapper;
 
-	public JsonModelSerializer(boolean doNullValues, Class<T> serializedType) {
+	public JsonModelSerializer(boolean doNullValues, boolean doIndent, Class<T> serializedType) {
 		super();
 		objectMapper = new ObjectMapper();
 		AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
 		// make serializer use JAXB annotations (only)
 		SerializationConfig sc = objectMapper.getSerializationConfig().withAnnotationIntrospector(introspector);
-		sc.with(SerializationConfig.Feature.INDENT_OUTPUT);
-		
+		if (doIndent) {
+			sc = sc.with(SerializationConfig.Feature.INDENT_OUTPUT);
+		} else {
+			sc = sc.without(SerializationConfig.Feature.INDENT_OUTPUT);
+		}
+
 		if (!doNullValues) {
-			sc.without(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
-			sc.without(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS);
+			sc = sc.without(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES);
+			sc = sc.without(SerializationConfig.Feature.WRITE_EMPTY_JSON_ARRAYS);
 			sc = sc.withSerializationInclusion(Inclusion.NON_EMPTY);
 		}
-		
+
 		objectMapper.setSerializationConfig(sc);
-//		if (!doNullValues) {
-//			objectMapper.setSerializationInclusion(Inclusion.NON_EMPTY);
-//		}
+		// if (!doNullValues) {
+		// objectMapper.setSerializationInclusion(Inclusion.NON_EMPTY);
+		// }
 	}
 
 	public JsonModelSerializer(Class<T> serializedType) {
-		this(true, serializedType);
+		this(true, false, serializedType);
 	}
 
 	@Override

@@ -17,7 +17,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<model.xsd>amalia-model-0.2.5.xsd</model.xsd>
+		<model.xsd>amalia-model-0.2.6.xsd</model.xsd>
 		<sonar.language>java</sonar.language>
 		<javax-annotations.version>1.3.2</javax-annotations.version>
 		<jaxb.generated>src/main/jaxb-generated</jaxb.generated>

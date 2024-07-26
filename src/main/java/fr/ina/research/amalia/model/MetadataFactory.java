@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Institut National de l'Audiovisuel, INA
+ * Copyright (c) 2015-2024 Institut National de l'Audiovisuel, INA
  *
  * This file is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -235,12 +235,16 @@ public class MetadataFactory {
 	}
 
 	public static void serializeToJsonFile(Collection<MetadataBlock> metadata, File f) throws AmaliaException {
+		serializeToJsonFile(metadata, false, f);
+	}
+	
+	public static void serializeToJsonFile(Collection<MetadataBlock> metadata, boolean indent, File f) throws AmaliaException {
 		ArrayList<Metadata> a = new ArrayList<Metadata>();
 		for (MetadataBlock m : metadata) {
 			a.add(m.getInternal());
 		}
 
-		JsonModelSerializer<ArrayList> jsonWriter = new JsonModelSerializer<ArrayList>(false, ArrayList.class);
+		JsonModelSerializer<ArrayList> jsonWriter = new JsonModelSerializer<ArrayList>(false, indent, ArrayList.class);
 		try {
 			FileWriter w = new FileWriter(f);
 			jsonWriter.setWriter(w);
@@ -252,11 +256,15 @@ public class MetadataFactory {
 	}
 
 	public static void serializeToJsonFile(MetadataBlock metadata, File f) throws AmaliaException {
-		JsonModelSerializer<Metadata> jsonWriter = new JsonModelSerializer<Metadata>(false, Metadata.class);
+		serializeToJsonFile(metadata, false, f);
+	}
+	
+	public static void serializeToJsonFile(MetadataBlock metadata, boolean indent, File f) throws AmaliaException {
+		JsonModelSerializer<Metadata> jsonWriter = new JsonModelSerializer<Metadata>(false, indent, Metadata.class);
 		serializeToFile(metadata, f, jsonWriter);
 	}
 
-	public static String serializeToJsonString(Collection<MetadataBlock> listOfMetadata) throws AmaliaException {
+	public static String serializeToJsonString(Collection<MetadataBlock> listOfMetadata, boolean indent) throws AmaliaException {
 
 		ArrayList<Metadata> a = new ArrayList<Metadata>();
 
@@ -266,7 +274,7 @@ public class MetadataFactory {
 
 		}
 
-		JsonModelSerializer<ArrayList> jsonWriter = new JsonModelSerializer<ArrayList>(false, ArrayList.class);
+		JsonModelSerializer<ArrayList> jsonWriter = new JsonModelSerializer<ArrayList>(false, indent, ArrayList.class);
 
 		StringWriter w = new StringWriter();
 
@@ -287,7 +295,11 @@ public class MetadataFactory {
 	}
 
 	public static String serializeToJsonString(MetadataBlock metadata) throws AmaliaException {
-		JsonModelSerializer<Metadata> jsonWriter = new JsonModelSerializer<Metadata>(false, Metadata.class);
+		return serializeToJsonString(metadata, false);
+	}
+
+	public static String serializeToJsonString(MetadataBlock metadata, boolean indent) throws AmaliaException {
+		JsonModelSerializer<Metadata> jsonWriter = new JsonModelSerializer<Metadata>(false, indent, Metadata.class);
 		return serializeToString(metadata, jsonWriter);
 	}
 

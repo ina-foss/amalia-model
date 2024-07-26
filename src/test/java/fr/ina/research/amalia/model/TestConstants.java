@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Institut National de l'Audiovisuel, INA
+ * Copyright (c) 2015-2024 Institut National de l'Audiovisuel, INA
  *
  * This file is free software: you can redistribute it and/or modify   
  * it under the terms of the GNU Lesser General Public License as published by
