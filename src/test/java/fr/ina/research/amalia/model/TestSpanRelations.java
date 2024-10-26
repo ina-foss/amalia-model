@@ -27,7 +27,6 @@ package fr.ina.research.amalia.model;
 import fr.ina.research.amalia.AmaliaException;
 import fr.ina.research.amalia.model.MetadataBlock.MetadataType;
 import fr.ina.research.amalia.model.jaxb.DirectionType;
-import fr.ina.research.amalia.model.jaxb.Relation;
 import fr.ina.research.rex.commons.tc.RexTimeCode;
 
 /**
