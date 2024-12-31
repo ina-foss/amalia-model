@@ -33,6 +33,7 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 	public final static String DEFAULT_PATTERN = "([0-9]{2}):([0-9]{2}):([0-9]{2}).([0-9]{4})";
 	public final static String DEFAULT_FORMAT = "%02d:%02d:%02d.%04d";
 	public final static double MS = 10000d;
+	public final static double EPSILON = 1E-10;
 
 	private static Pattern pattern;
 
@@ -128,7 +129,11 @@ public class RexTimeCode implements Comparable<RexTimeCode> {
 
 	@Override
 	public int compareTo(RexTimeCode o) {
-		return (int) Math.signum(getSecond() - o.getSecond());
+		double diff = getSecond() - o.getSecond();
+		if (Math.abs(diff) < EPSILON) {
+			diff = 0;
+		}
+		return (int) Math.signum(diff);
 	}
 
 	@Override
