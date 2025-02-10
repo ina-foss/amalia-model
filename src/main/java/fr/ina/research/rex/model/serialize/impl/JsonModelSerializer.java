@@ -1,18 +1,18 @@
 /*
  * Copyright 2012-2024 Institut National de l'Audiovisuel
- * 
+ *
  * This file is part of Rex.
- * 
+ *
  * Rex is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Rex is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with Rex. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,13 +25,14 @@ import org.codehaus.jackson.map.AnnotationIntrospector;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
 
 import fr.ina.research.rex.model.serialize.ModelException;
 
 /**
- * 
+ *
  * @author Nicolas HERVE - nherve@ina.fr
  */
 public class JsonModelSerializer<T> extends DefaultModelSerializer<T> {
@@ -82,5 +83,11 @@ public class JsonModelSerializer<T> extends DefaultModelSerializer<T> {
 		} catch (IOException e) {
 			throw new ModelException(e);
 		}
+	}
+
+	public void withSerializationInclusion(JsonSerialize.Inclusion incl) {
+		SerializationConfig sc = objectMapper.getSerializationConfig();
+		sc = sc.withSerializationInclusion(incl);
+		objectMapper.setSerializationConfig(sc);
 	}
 }
